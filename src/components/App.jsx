@@ -43,6 +43,7 @@ export default function App() {
       setError(error);
       setIsLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, searchData]);
 
   const onSubmit = newSearchData => {
