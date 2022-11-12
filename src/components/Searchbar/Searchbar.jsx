@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { toast } from 'react-toastify';
+import React from 'react';
+import { useState } from 'react';
 import { FiSearch } from 'react-icons/fi'; ///npm i react-icons
 import PropTypes from 'prop-types';
 import {
@@ -10,55 +10,40 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  state = {
-    searchQuery: '',
-  };
+export default function Searchbar({ onSubmit }) {
+  const [searchData, setSearchData] = useState('');
 
-  handleChange = e => {
-    this.setState({ searchQuery: e.currentTarget.value.toLowerCase() });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-
-    if (this.state.searchQuery.trim() === '') {
-      return toast.warning('Write something ✍(◔◡◔)');
-    }
-    this.props.onSubmit(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
-    this.reset();
+    onSubmit(searchData);
   };
 
-  reset = () => {
-    this.setState({ searchQuery: '' });
+  const handleChange = evt => {
+    const { value } = evt.target;
+    setSearchData(value);
   };
 
-  render() {
-    return (
-      <SearchbarHeader>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchFormBbutton type="submit">
-            <span>
-              <FiSearch size={30} stroke="#9035bd" />
-            </span>
-            {/* <span className="button-label">Search</span> */}
-          </SearchFormBbutton>
-          <SearchFormButtonLabel>
-            <SearchFormInput
-              name="searchQuery"
-              type="text"
-              autocomplete="off"
-              autoFocus
-              placeholder="Search images and photos"
-              value={this.state.searchQuery}
-              onChange={this.handleChange}
-            />
-          </SearchFormButtonLabel>
-        </SearchForm>
-      </SearchbarHeader>
-    );
-  }
+  return (
+    <SearchbarHeader>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormBbutton type="submit">
+          <span>
+            <FiSearch size={30} stroke="#9035bd" />
+          </span>
+          {/* <span className="button-label">Search</span> */}
+        </SearchFormBbutton>
+        <SearchFormButtonLabel>
+          <SearchFormInput
+            type="text"
+            autocomplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+            onChange={handleChange}
+          />
+        </SearchFormButtonLabel>
+      </SearchForm>
+    </SearchbarHeader>
+  );
 }
 
 Searchbar.propTypes = {
